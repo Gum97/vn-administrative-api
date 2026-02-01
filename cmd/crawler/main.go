@@ -30,14 +30,8 @@ func main() {
 	}
 	defer repo.Close()
 
-	// 4. Init Schema
-	// Read schema file
-	schemaBytes, err := os.ReadFile("internal/database/schema.sql")
-	if err != nil {
-		appLog.Error("Failed to read schema file", "error", err)
-		os.Exit(1)
-	}
-	if err := repo.InitSchema(string(schemaBytes)); err != nil {
+	// 4. Init Schema (using embedded SQL)
+	if err := repo.InitSchema(database.SchemaSQL); err != nil {
 		appLog.Error("Failed to init schema", "error", err)
 		os.Exit(1)
 	}
