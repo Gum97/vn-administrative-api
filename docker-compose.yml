@@ -55,8 +55,8 @@ services:
     volumes:
       - vn_admin_postgres_data:/var/lib/postgresql/data
       - ./internal/database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
-    ports:
-      - "5432:5432"
+    # ports:
+    #   - "5432:5432"  # Không expose ra ngoài, chỉ dùng internal
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
@@ -68,8 +68,8 @@ services:
     container_name: vn-admin-redis
     image: redis:7-alpine
     command: redis-server --appendonly yes --maxmemory 128mb --maxmemory-policy allkeys-lru
-    ports:
-      - "6379:6379"
+    # ports:
+    #   - "6379:6379"  # Không expose ra ngoài, chỉ dùng internal
     volumes:
       - vn_admin_redis_data:/data
     healthcheck:
