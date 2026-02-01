@@ -80,3 +80,8 @@ services:
 volumes:
   vn_admin_postgres_data:
   vn_admin_redis_data:
+
+
+networks:
+  default:
+    name: vn-admin-network
