@@ -34,7 +34,7 @@ docker-compose up -d
 docker-compose logs -f api
 
 # Crawl data (first time or update)
-docker-compose run --rm crawler
+docker-compose run --rm vn-admin-crawler
 ```
 
 ### Option 2: Manual Build
