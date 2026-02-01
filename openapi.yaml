@@ -1,0 +1,184 @@
+openapi: 3.0.0
+info:
+  title: VN Administrative API
+  version: 1.0.0
+  description: API cung cấp dữ liệu hành chính Việt Nam (Tỉnh/Thành phố, Quận/Huyện, Xã_Phường).
+servers:
+  - url: http://localhost:8080
+    description: Local Environment
+  - url: https://api.staging.example.com
+    description: Staging Environment
+paths:
+  /health:
+    get:
+      summary: Liveness Probe
+      description: Kiểm tra server có đang chạy không
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Server is running
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "ok"
+  /ready:
+    get:
+      summary: Readiness Probe
+      description: Kiểm tra database connection có sẵn sàng không
+      operationId: readyCheck
+      responses:
+        '200':
+          description: Service is ready
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "ready"
+        '503':
+          description: Service not ready
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/provinces:
+    get:
+      summary: Lấy danh sách Tỉnh/Thành phố
+      operationId: getProvinces
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvinceResponse'
+  /api/v1/provinces/{id}/units:
+    get:
+      summary: Lấy danh sách Đơn vị hành chính cấp dưới (Quận/Huyện)
+      operationId: getProvinceUnits
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID của Tỉnh/Thành phố
+      responses:
+        '200':
+          description: Thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnitResponse'
+        '400':
+          description: ID không hợp lệ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/search:
+    get:
+      summary: Tìm kiếm Đơn vị hành chính
+      description: Tìm kiếm theo tên hiện tại hoặc thông tin trước sáp nhập
+      operationId: searchUnits
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 2
+          description: Từ khóa tìm kiếm (tối thiểu 2 ký tự)
+      responses:
+        '200':
+          description: Kết quả tìm kiếm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnitResponse'
+        '400':
+          description: Từ khóa quá ngắn
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    Province:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        tentinh:
+          type: string
+          example: "Thành phố Hà Nội"
+        mahc:
+          type: integer
+          example: 1
+        updated_at:
+          type: string
+          format: date-time
+    
+    AdminUnit:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 101
+        matinh:
+          type: integer
+          example: 1
+        tenhc:
+          type: string
+          example: "Quận Ba Đình"
+        loai:
+          type: string
+          example: "Quận"
+        ma:
+          type: string
+          example: "001"
+        truocsapnhap:
+          type: string
+          example: "Thông tin cũ..."
+        vido:
+          type: number
+          format: float
+          example: 21.034
+        kinhdo:
+          type: number
+          format: float
+          example: 105.81
+        updated_at:
+          type: string
+          format: date-time
+
+    ProvinceResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Province'
+
+    UnitResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminUnit'
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Invalid ID / Query too short"

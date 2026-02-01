@@ -1,0 +1,33 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+*.md
+!README.md
+
+# IDE
+.idea/
+.vscode/
+
+# Environment (never include in image!)
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+
+# Test files
+*_test.go
+testdata/
+
+# Build artifacts
+*.exe
+server
+crawler
+
+# Temporary
+tmp/
+*.tmp
