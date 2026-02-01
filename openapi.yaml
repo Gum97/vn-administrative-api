@@ -18,9 +18,7 @@ info:
 servers:
   - url: http://localhost:8080
     description: Local Development
-  - url: https://api.staging.example.com
-    description: Staging Environment
-  - url: https://api.example.com
+  - url: https://provinces.myservices.io.vn
     description: Production Environment
 
 tags:
