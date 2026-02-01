@@ -21,7 +21,7 @@
 
 ```bash
 # Clone repository
-git clone https://github.com/your-username/vn-administrative-api.git
+git clone https://github.com/gum97/vn-administrative-api.git
 cd vn-administrative-api
 
 # Copy và chỉnh sửa config
