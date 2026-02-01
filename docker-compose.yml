@@ -21,6 +21,9 @@ services:
         condition: service_healthy
       vn-admin-redis:
         condition: service_healthy
+    links:
+      - vn-admin-db
+      - vn-admin-redis
     restart: unless-stopped
 
   # Crawler - Run manually: docker-compose run --rm vn-admin-crawler
