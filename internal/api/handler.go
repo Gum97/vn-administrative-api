@@ -86,6 +86,18 @@ func (h *Handler) ReadyCheck(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{"status": "ready"})
 }
 
+// Root handles GET /
+func (h *Handler) Root(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	response := map[string]string{
+		"message": "Welcome to VN Administrative API",
+		"docs":    "/api/v1/provinces",
+		"health":  "/health",
+	}
+	json.NewEncoder(w).Encode(response)
+}
+
 // API Handlers
 
 // GetProvinces handles GET /api/v1/provinces

@@ -24,6 +24,7 @@ func buildRouter(handler *Handler, log *logger.Logger) http.Handler {
 	// Health Check Endpoints
 	mux.HandleFunc("GET /health", handler.HealthCheck)
 	mux.HandleFunc("GET /ready", handler.ReadyCheck)
+	mux.HandleFunc("GET /", handler.Root)
 
 	// API Routes
 	mux.HandleFunc("GET /api/v1/provinces", handler.GetProvinces)
